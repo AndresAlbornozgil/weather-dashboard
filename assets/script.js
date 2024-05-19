@@ -1,5 +1,6 @@
 // Global Variables
 const searchCity = document.querySelector('#search-button');
+const apiKey = '12f94b2cfb070aaff567973e5f387444'
 
 
 // --------------Functions Section--------------
@@ -16,7 +17,7 @@ function getApi() {
         .then(function (data) {
 
         })
-}
+};
 
 
 
