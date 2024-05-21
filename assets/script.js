@@ -41,17 +41,30 @@ function getForecast(lat, lon) {
             return response.json();
         })
         .then(function (data) {
-            console.log(data)
+            // console.log(data)
+            renderCurrentWeather(data);
         })
 }
 
-function renderingCurrentDay() {
+function renderCurrentWeather(currentWeather) {
+    console.log(currentWeather)
+
+    const cityWeatherContainer = document.createElement('div');
+    const cityName = document.createElement('h2');
+    const temperature = document.createElement('p');
+    const wind = document.createElement('p');
+    const humidity = document.createElement('p');
+
+    cityName.textContent = currentWeather.city.name
+    temperature.textContent = currentWeather.list[0].main.temp
+    wind.textContent = currentWeather.list[0].wind.speed
+    humidity.textContent = currentWeather.list[0].main.humidity
+}
+
+function renderWeeklyWeather() {
 
 }
 
-function renderingFutureForecast() {
-
-}
 
 function renderSearchHistory() {
     citiesArray.forEach((city) => 
@@ -62,18 +75,8 @@ function renderSearchHistory() {
     })
 }
 
-
-
-
-
-// https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&exclude={part}&appid={API key}
-
-http://api.openweathermap.org/geo/1.0/direct?q={city name},{state code},{country code}&limit={limit}&appid={API key}
-
-
-
-
 renderSearchHistory();
+
 
 // Event Listeners
 searchCity.addEventListener('click', getApi);
