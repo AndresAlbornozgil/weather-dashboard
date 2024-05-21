@@ -1,8 +1,10 @@
 // Global Variables
 const searchCity = document.querySelector('#search-button');
-const apiKey = '12f94b2cfb070aaff567973e5f387444'
+const apiKey = '12f94b2cfb070aaff567973e5f387444';
 const citiesArray = JSON.parse(localStorage.getItem('cities')) || [];
 const searchHistory = document.getElementById('search-history');
+const displayCurrentWeather = document.getElementById('current-weather');
+const weeklyForecast = document.getElementById('week-forecast');
 
 
 // --------------Functions Section--------------
@@ -59,10 +61,15 @@ function renderCurrentWeather(currentWeather) {
     temperature.textContent = currentWeather.list[0].main.temp
     wind.textContent = currentWeather.list[0].wind.speed
     humidity.textContent = currentWeather.list[0].main.humidity
+
+    displayCurrentWeather.append(cityName)
+    displayCurrentWeather.append(temperature)
+    displayCurrentWeather.append(wind)
+    displayCurrentWeather.append(humidity)
 }
 
 function renderWeeklyWeather() {
-
+    
 }
 
 
