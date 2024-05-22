@@ -69,7 +69,7 @@ function renderWeeklyWeather(forecast) {
     for (let i = 0; i < 5; i++) {
         const weatherCard = document.createElement('div');
         weatherCard.setAttribute('class', 'card');
-        const dayOfWeek = document.createElement('p');
+        const dayOfWeek = document.createElement('h4');
         const temperature = document.createElement('p');
         const wind = document.createElement('p');
         const humidity = document.createElement('p');
