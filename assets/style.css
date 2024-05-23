@@ -56,7 +56,7 @@ header h1 {
     align-items: center;
     margin: 0 0 10px 0;
     padding: 5px;
-    background-color: lightgray;
+    background-color: midnightblue;
     border-radius: 50px;
 }
 
@@ -82,4 +82,15 @@ header h1 {
 
 #week-forecast .card {
     margin-right: 40px;
+    background-color: midnightblue;
+    color: white;
+}
+
+#week-forecast h4 {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin-right: 115px;
+    border-bottom: solid;
+    width: 100%;
 }

@@ -12,11 +12,15 @@ function updateLocalStorage(cityName) {
     if (!citiesArray.includes(cityName)) {
         citiesArray.push(cityName);
         localStorage.setItem('cities', JSON.stringify(citiesArray));
+        renderSearchHistory();
     }
 }
 
-function getApi() {
-    const cityName = document.querySelector('#search-bar').value;
+function getApi(cityName = null) {
+    if (!cityName) {
+        cityName = document.querySelector('#search-bar').value;
+    }
+
     const requestUrl = `https://api.openweathermap.org/geo/1.0/direct?q=${cityName}&appid=${apiKey}`;
     updateLocalStorage(cityName);
 
@@ -25,37 +29,39 @@ function getApi() {
         .then(data => {
             const latitude = data[0].lat;
             const longitude = data[0].lon;
-            getForecast(latitude, longitude);
+            getForecast(latitude, longitude, cityName);
         });
 }
 
-function getForecast(lat, lon) {
-    const requestUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+function getForecast(lat, lon, cityName) {
+    const requestUrlCelsius = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`;
+    const requestUrlFahrenheit = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=imperial&appid=${apiKey}`;
 
-    fetch(requestUrl)
-        .then(response => response.json())
-        .then(data => {
-            renderCurrentWeather(data);
-            renderWeeklyWeather(data);
-        });
+    Promise.all([
+        fetch(requestUrlCelsius).then(response => response.json()),
+        fetch(requestUrlFahrenheit).then(response => response.json())
+    ]).then(([dataCelsius, dataFahrenheit]) => {
+        renderCurrentWeather(dataCelsius, dataFahrenheit, cityName);
+        renderWeeklyWeather(dataCelsius, dataFahrenheit);
+    });
 }
 
-function renderCurrentWeather(currentWeather) {
+function renderCurrentWeather(currentWeatherCelsius, currentWeatherFahrenheit, cityName) {
     displayCurrentWeather.innerHTML = ''; // Clear existing content
 
     const cityWeatherContainer = document.createElement('div');
     cityWeatherContainer.setAttribute('class', 'border');
-    const cityName = document.createElement('h2');
+    const cityNameEl = document.createElement('h2');
     const temperature = document.createElement('p');
     const wind = document.createElement('p');
     const humidity = document.createElement('p');
 
-    cityName.textContent = currentWeather.city.name;
-    temperature.textContent = 'Temp: ' + currentWeather.list[0].main.temp;
-    wind.textContent = 'Wind: ' + currentWeather.list[0].wind.speed;
-    humidity.textContent = 'Humidity: ' + currentWeather.list[0].main.humidity;
+    cityNameEl.textContent = cityName;
+    temperature.textContent = `Temp: ${currentWeatherCelsius.list[0].main.temp} °C / ${currentWeatherFahrenheit.list[0].main.temp} °F`;
+    wind.textContent = `Wind: ${currentWeatherCelsius.list[0].wind.speed} m/s / ${currentWeatherFahrenheit.list[0].wind.speed} mph`;
+    humidity.textContent = `Humidity: ${currentWeatherCelsius.list[0].main.humidity} %`;
 
-    cityWeatherContainer.append(cityName);
+    cityWeatherContainer.append(cityNameEl);
     cityWeatherContainer.append(temperature);
     cityWeatherContainer.append(wind);
     cityWeatherContainer.append(humidity);
@@ -63,7 +69,7 @@ function renderCurrentWeather(currentWeather) {
     displayCurrentWeather.append(cityWeatherContainer);
 }
 
-function renderWeeklyWeather(forecast) {
+function renderWeeklyWeather(forecastCelsius, forecastFahrenheit) {
     weeklyForecast.innerHTML = ''; // Clear existing content
 
     for (let i = 0; i < 5; i++) {
@@ -74,10 +80,10 @@ function renderWeeklyWeather(forecast) {
         const wind = document.createElement('p');
         const humidity = document.createElement('p');
 
-        dayOfWeek.textContent = forecast.list[i].dt_txt;
-        temperature.textContent = 'Temp: ' + forecast.list[i].main.temp;
-        wind.textContent = 'Wind: ' + forecast.list[i].wind.speed;
-        humidity.textContent = 'Humidity: ' + forecast.list[i].main.humidity;
+        dayOfWeek.textContent = dayjs(forecastCelsius.list[i].dt_txt).format('dddd');
+        temperature.textContent = `Temp: ${forecastCelsius.list[i].main.temp} °C / ${forecastFahrenheit.list[i].main.temp} °F`;
+        wind.textContent = `Wind: ${forecastCelsius.list[i].wind.speed} m/s / ${forecastFahrenheit.list[i].wind.speed} mph`;
+        humidity.textContent = `Humidity: ${forecastCelsius.list[i].main.humidity} %`;
 
         weatherCard.append(dayOfWeek);
         weatherCard.append(temperature);
@@ -94,16 +100,17 @@ function renderSearchHistory() {
     citiesArray.forEach(city => {
         const buttonEl = document.createElement('button');
         buttonEl.textContent = city;
-        buttonEl.addEventListener('click', citySearchHistory);
+        buttonEl.setAttribute('class', 'btn btn-secondary m-1'); // Optional: Add styling
+        buttonEl.addEventListener('click', function() {
+            getApi(city);
+        });
         searchHistory.append(buttonEl);
     });
 }
 
-function citySearchHistory(event) {
-    getApi(this.textContent);
-}
-
+// Initial rendering of search history
 renderSearchHistory();
 
 // Event Listeners
-searchCity.addEventListener('click', getApi);
+searchCity.addEventListener('click', () => getApi());
+
