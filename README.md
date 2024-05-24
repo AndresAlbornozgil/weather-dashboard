@@ -1,7 +1,8 @@
 # weather-dashboard
 
 ## Description
-A weather dashboard that runs in the browser and features dynamically updated HTML and CSS.
+A weather dashboard that runs in the browser and features dynamically updated HTML and CSS. I built it with the idea to help travelers to see the weather outlook for multiple cities
+so that they can plan trips accordingly. This way they can prepare properly and prevent any bad weather ruining their day or trip. I learned that API's are a really powerful and useful tool as well as that we as developers build our work on top of other's developer's work.
 
 ## Table of Contents
 - [Installation](#installation)
@@ -15,7 +16,11 @@ A weather dashboard that runs in the browser and features dynamically updated HT
 This project does not require an installation. However, you are welcome to to either clone the repository and access the project files or fork the repo.
 
 ## Usage
-Deployed on [GitHub Pages]()
+Deployed on [GitHub Pages](https://andresalbornozgil.github.io/weather-dashboard/)
+
+Once on the landing page, you will see a search bar on the upper right corner of the page. Input any city and the current as well as weekly forecast will diplay on the center of the page.
+
+Every city you have searched for will be displayed underneath the search bar. If you click on any of those cities, their daily weather and weekly forecast will be displayed as well.
 
 ![image of westher dashboard](assets/images/weather-app.JPG)
 
