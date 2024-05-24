@@ -1,4 +1,4 @@
-# weather-dashboard
+# Weather Dashboard
 
 ## Description
 A weather dashboard that runs in the browser and features dynamically updated HTML and CSS. I built it with the idea to help travelers to see the weather outlook for multiple cities
