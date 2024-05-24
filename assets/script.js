@@ -72,7 +72,13 @@ function renderCurrentWeather(currentWeatherCelsius, currentWeatherFahrenheit, c
 function renderWeeklyWeather(forecastCelsius, forecastFahrenheit) {
     weeklyForecast.innerHTML = ''; // Clear existing content
 
-    for (let i = 0; i < 5; i++) {
+    // Get unique dates for the forecast days
+    const dates = [...new Set(forecastCelsius.list.map(item => item.dt_txt.split(' ')[0]))].slice(0, 5);
+
+    dates.forEach(date => {
+        const dailyForecastCelsius = forecastCelsius.list.find(item => item.dt_txt.startsWith(date));
+        const dailyForecastFahrenheit = forecastFahrenheit.list.find(item => item.dt_txt.startsWith(date));
+
         const weatherCard = document.createElement('div');
         weatherCard.setAttribute('class', 'card');
         const dayOfWeek = document.createElement('h4');
@@ -80,10 +86,10 @@ function renderWeeklyWeather(forecastCelsius, forecastFahrenheit) {
         const wind = document.createElement('p');
         const humidity = document.createElement('p');
 
-        dayOfWeek.textContent = dayjs(forecastCelsius.list[i].dt_txt).format('dddd');
-        temperature.textContent = `Temp: ${forecastCelsius.list[i].main.temp} °C / ${forecastFahrenheit.list[i].main.temp} °F`;
-        wind.textContent = `Wind: ${forecastCelsius.list[i].wind.speed} m/s / ${forecastFahrenheit.list[i].wind.speed} mph`;
-        humidity.textContent = `Humidity: ${forecastCelsius.list[i].main.humidity} %`;
+        dayOfWeek.textContent = dayjs(date).format('dddd');
+        temperature.textContent = `Temp: ${dailyForecastCelsius.main.temp} °C / ${dailyForecastFahrenheit.main.temp} °F`;
+        wind.textContent = `Wind: ${dailyForecastCelsius.wind.speed} m/s / ${dailyForecastFahrenheit.wind.speed} mph`;
+        humidity.textContent = `Humidity: ${dailyForecastCelsius.main.humidity} %`;
 
         weatherCard.append(dayOfWeek);
         weatherCard.append(temperature);
@@ -91,7 +97,7 @@ function renderWeeklyWeather(forecastCelsius, forecastFahrenheit) {
         weatherCard.append(humidity);
 
         weeklyForecast.append(weatherCard);
-    }
+    });
 }
 
 function renderSearchHistory() {
@@ -113,4 +119,3 @@ renderSearchHistory();
 
 // Event Listeners
 searchCity.addEventListener('click', () => getApi());
-
