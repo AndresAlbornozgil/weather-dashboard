@@ -22,7 +22,7 @@ Once on the landing page, you will see a search bar on the upper right corner of
 
 Every city you have searched for will be displayed underneath the search bar. If you click on any of those cities, their daily weather and weekly forecast will be displayed as well.
 
-![image of westher dashboard](assets/images/weather-app.JPG)
+![image of westher dashboard]()
 
 ## Credits
 Andres Albornoz
