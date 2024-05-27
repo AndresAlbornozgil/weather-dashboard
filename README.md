@@ -18,7 +18,7 @@ This project does not require an installation. However, you are welcome to to ei
 ## Usage
 Deployed on [GitHub Pages](https://andresalbornozgil.github.io/weather-dashboard/)
 
-Once on the landing page, you will see a search bar on the upper right corner of the page. Input any city and the current as well as weekly forecast will diplay on the center of the page.
+Once on the landing page, you will see a search bar on the upper left corner of the page. Input any city and the current as well as weekly forecast will diplay on the center of the page.
 
 Every city you have searched for will be displayed underneath the search bar. If you click on any of those cities, their daily weather and weekly forecast will be displayed as well.
 
